@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZK Metadata</title>
+<link rel="icon" href="data:image/png;base64,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">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0fb;--pn:#fff;--pn2:#f5f6fd;--tx:#14172b;--mu:#666d8c;--bd:#dfe2f3;--ac:#5b63f0;--ac2:#e6e8ff;--g:linear-gradient(135deg,#8b5cf6,#3b82f6);--rk:#b45309;--rk2:#fff1d6;--ok:#15803d;--er:#dc2626;--wn:#b45309;--r:14px}
+[data-theme=dark]{--bg:#0c0e1d;--pn:#14172c;--pn2:#0f1224;--tx:#e9ebf8;--mu:#8e94b8;--bd:#25294a;--ac:#8c9bff;--ac2:#232857;--rk:#ffb547;--rk2:#3a2c0f;--ok:#4ade80;--er:#f87171;--wn:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 Inter,system-ui,sans-serif}
+h1,h2{font-family:'Bricolage Grotesque',Inter,sans-serif;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 22px;background:var(--pn);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:5}
+h1{font-size:21px;letter-spacing:-.01em}
+h1 small{display:block;font:400 12px Inter;color:var(--mu);letter-spacing:0}
+.btn{border:1px solid var(--bd);background:var(--pn);border-radius:10px;padding:8px 14px;font-weight:600;transition:.15s}
+.btn:hover{border-color:var(--ac);color:var(--ac)}
+.btn.pri{background:var(--g);border-color:transparent;color:#fff}
+.btn.pri:hover{filter:brightness(1.1);color:#fff}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+main{max-width:1280px;margin:0 auto;padding:20px 22px 60px}
+.panel{background:var(--pn);border:1px solid var(--bd);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.panel h2{font-size:16px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.f label{display:flex;justify-content:space-between;font-weight:600;margin-bottom:6px}
+.f label b{color:var(--ac);font-variant-numeric:tabular-nums}
+.f input[type=text],.f input[type=password],.f select{width:100%;padding:9px 11px;border:1px solid var(--bd);border-radius:10px;background:var(--pn2)}
+.row{display:flex;align-items:center;gap:8px}
+.row button{width:32px;height:32px;border-radius:50%;border:1px solid var(--bd);background:var(--pn2);font-size:18px;line-height:1;flex:none}
+.row button:hover{background:var(--ac);color:#fff;border-color:var(--ac)}
+input[type=range]{flex:1;accent-color:var(--ac)}
+.drop{border:2px dashed var(--bd);border-radius:var(--r);padding:30px;text-align:center;color:var(--mu);background:var(--pn);transition:.15s}
+.drop.on,.drop:hover{border-color:var(--ac);background:var(--ac2);color:var(--tx)}
+.drop strong{display:block;font:700 17px 'Bricolage Grotesque';color:var(--tx)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:16px 0}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:6px 12px;display:flex;gap:8px;align-items:baseline}
+.stat b{font:700 18px 'Bricolage Grotesque';font-variant-numeric:tabular-nums}
+.stat span{color:var(--mu);font-size:12px}
+.stat.ok b{color:var(--ok)}.stat.er b{color:var(--er)}.stat.wn b{color:var(--wn)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.card{background:var(--pn);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.th{position:relative;height:190px;background:var(--pn2)}
+.th img,.th video{width:100%;height:100%;object-fit:contain;display:block}
+.pill{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--pn);border:1px solid var(--bd)}
+.pill.ok{color:var(--ok)}.pill.er{color:var(--er)}.pill.run{color:var(--ac)}
+.pill.run::before{content:"";display:inline-block;width:8px;height:8px;border:2px solid var(--ac);border-top-color:transparent;border-radius:50%;margin-right:6px;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.pill.run::before{animation:none}}
+.bd{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.fn{font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fl{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:3px}
+.fl em{font-style:normal;color:var(--mu);font-weight:400;font-variant-numeric:tabular-nums}
+.fl em.over{color:var(--er)}
+textarea{width:100%;resize:vertical;padding:8px 10px;border:1px solid var(--bd);border-radius:10px;background:var(--pn2)}
+.kws{display:flex;flex-wrap:wrap;gap:5px}
+.kw{display:inline-flex;align-items:center;gap:5px;background:var(--pn2);border:1px solid var(--bd);border-radius:8px;padding:2px 7px 2px 3px;font-size:12px}
+.kw i{font-style:normal;font-weight:700;min-width:20px;text-align:center;border-radius:5px;background:var(--bd);color:var(--mu);font-size:11px;padding:1px 3px}
+.kw.top{border-color:var(--rk);background:var(--rk2)}
+.kw.top i{background:var(--rk);color:#fff}
+.kw u{text-decoration:none;color:var(--mu);font-size:11px}
+.kw a{cursor:pointer;color:var(--mu);padding:0 2px}.kw a:hover{color:var(--er)}
+.kw.over{opacity:.4}
+.add{width:100%;padding:6px 10px;border:1px dashed var(--bd);border-radius:8px;background:transparent}
+.ft{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.err{color:var(--er);font-size:12px}
+.note{font-size:12px;color:var(--mu)}
+.empty{grid-column:1/-1;text-align:center;color:var(--mu);padding:30px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;display:none;z-index:9}
+.logo{display:flex;align-items:center;gap:11px}.logo img{width:40px;height:40px;border-radius:10px}
+.kr{display:flex;gap:6px}.kr input{flex:1}.kr button{flex:none}
+.prog{height:8px;background:var(--bd);border-radius:99px;overflow:hidden;margin:0 0 6px;display:none}
+.prog.on{display:block}.prog div{height:100%;width:0;background:var(--g);transition:width .3s}
+.prog.ind div{width:35%;animation:ind 1.1s ease-in-out infinite alternate}
+@keyframes ind{to{margin-left:65%}}
+.pt{font-size:12px;color:var(--mu);display:none;margin-bottom:6px}.pt.on{display:block}
+.ld{position:absolute;inset:0;background:color-mix(in srgb,var(--pn) 72%,transparent);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-weight:600;color:var(--ac)}
+.ld::before{content:"";width:30px;height:30px;border:3px solid var(--ac);border-top-color:transparent;border-radius:50%;animation:sp .8s linear infinite}
+.sk{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--bd),var(--pn2),var(--bd));background-size:200% 100%;animation:sh 1.2s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.vb{position:absolute;right:10px;top:10px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){.ld::before,.sk,.prog.ind div{animation:none}}
+
+/* ZK PATCH ONLY: colorful button icons and creator links */
+.btn{box-shadow:0 2px 5px rgba(30,41,59,.06)}
+.btn::before{display:inline-block;margin-right:6px;line-height:1}
+#theme::before{content:"🌙"}#eye::before{content:"👁️"}#detect::before{content:"🔎"}
+#go::before{content:"✨"}#retry::before{content:"🔄"}#hide::before{content:"🪄"}
+#csv::before{content:"📄"}#zip::before{content:"📦"}#clear::before{content:"🗑️"}
+#eye{background:#eef2ff;border-color:#c7d2fe;color:#4338ca}
+#detect{background:#ecfeff;border-color:#a5f3fc;color:#0e7490}
+#go{background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border-color:transparent}
+#retry{background:#fff7ed;border-color:#fed7aa;color:#c2410c}
+#hide{background:#f5f3ff;border-color:#ddd6fe;color:#6d28d9}
+#csv{background:#ecfdf5;border-color:#a7f3d0;color:#047857}
+#zip{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+#clear{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+#theme::before{content:"🌙"}#theme{background:#f3f4f6;color:#374151}
+#theme:has(+ *){color:inherit}
+#theme:focus-visible,#eye:focus-visible,#detect:focus-visible{outline-offset:3px}
+.ft .btn::before{display:inline-block;margin-right:4px}
+.row button::before{content:""}
+.row button{color:var(--ac);font-weight:800}
+.row button:hover{box-shadow:0 3px 8px rgba(91,99,240,.22)}
+.ft [data-act="regen"]::before{content:"✨"}
+.ft [data-act="toggle"]::before{content:"👁️"}
+.ft [data-act="cp"][data-w="title"]::before{content:"📋"}
+.ft [data-act="cp"][data-w="desc"]::before{content:"📝"}
+.ft [data-act="cp"][data-w="kw"]::before{content:"🏷️"}
+.ft [data-act="del"]::before{content:"🗑️"}
+.creator-links{margin-top:22px;padding:18px;background:var(--pn);border:1px solid var(--bd);border-radius:var(--r)}
+.creator-links h2{font-size:16px;margin:0 0 6px}
+.creator-links p{margin:0 0 12px;color:var(--mu);font-size:12px}
+.link-list{display:flex;flex-wrap:wrap;gap:10px}
+.creator-link{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:10px;text-decoration:none;font-weight:600;border:1px solid transparent;transition:transform .15s,filter .15s}
+.creator-link:hover{transform:translateY(-2px);filter:brightness(.97)}
+.creator-link span{font-size:17px}
+.creator-link.tiktok{background:#f3f4f6;color:#111827;border-color:#d1d5db}
+.creator-link.lynk{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.creator-link.prompt{background:#eef2ff;color:#4338ca;border-color:#c7d2fe}
+.creator-link.whatsapp{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+[data-theme=dark] .creator-link.tiktok{background:#25283b;color:#f3f4f6;border-color:#414563}
+@media(max-width:600px){.creator-links{padding:14px}.link-list{gap:8px}.creator-link{flex:1 1 145px;justify-content:center}}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><img src="data:image/png;base64,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" alt=""><h1>ZK Metadata<small>AI membaca gambar dan video, menyusun title, deskripsi, dan keyword berperingkat</small></h1></div>
+  <button class="btn" id="theme">Mode gelap</button>
+</header>
+<main>
+  <section class="panel">
+    <h2>Pengaturan</h2>
+    <div class="grid3">
+      <div class="f"><label>Penyedia AI</label><select id="prov"><option value="gemini">Gemini</option><option value="groq">Groq</option></select></div>
+      <div class="f"><label id="keyl">API key</label><div class="kr"><input type="password" id="key" placeholder="Tempel API key" autocomplete="off" spellcheck="false"><button class="btn sm" id="eye" type="button">Lihat</button></div></div>
+      <div class="f"><label>Model <button class="btn sm" id="detect" type="button">Deteksi model</button></label><select id="model"><option>gemini-2.5-flash</option></select></div>
+      <div class="f"><label>Platform untuk CSV</label><select id="plat"></select></div>
+      <div class="f" id="licw"><label>Lisensi (Vecteezy)</label><select id="lic"><option value="free">free</option><option value="pro">pro</option></select></div>
+      <div class="f"><label>Panjang title <b id="v_tl"></b></label><div class="row"><button data-s="tl" data-d="-1">−</button><input type="range" id="r_tl" min="30" max="200"><button data-s="tl" data-d="1">+</button></div></div>
+      <div class="f"><label>Panjang deskripsi <b id="v_dl"></b></label><div class="row"><button data-s="dl" data-d="-1">−</button><input type="range" id="r_dl" min="60" max="500"><button data-s="dl" data-d="1">+</button></div></div>
+      <div class="f"><label>Jumlah keyword <b id="v_kc"></b></label><div class="row"><button data-s="kc" data-d="-1">−</button><input type="range" id="r_kc" min="5" max="50"><button data-s="kc" data-d="1">+</button></div></div>
+    </div>
+  </section>
+
+  <label class="drop" id="drop" style="display:block;cursor:pointer">
+    <strong>Seret gambar atau video ke sini, atau klik untuk memilih</strong>
+    JPG, PNG, WEBP, MP4, atau MOV. AI membaca isi gambar atau cuplikan video, bukan nama file.
+    <input type="file" id="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,.mp4,.mov" multiple hidden>
+  </label>
+
+  <div class="bar">
+    <div class="stats">
+      <div class="stat"><b id="s_all">0</b><span>Diupload</span></div>
+      <div class="stat ok"><b id="s_ok">0</b><span>Berhasil</span></div>
+      <div class="stat er"><b id="s_er">0</b><span>Gagal</span></div>
+      <div class="stat wn"><b id="s_run">0</b><span>Diproses</span></div>
+    </div>
+    <div class="acts">
+      <button class="btn pri" id="go">Generate semua</button>
+      <button class="btn" id="retry">Ulangi yang gagal</button>
+      <button class="btn" id="hide">Sembunyikan metadata</button>
+      <button class="btn" id="csv">Unduh CSV</button>
+      <button class="btn" id="zip">Unduh ZIP (embed)</button>
+      <button class="btn" id="clear">Kosongkan</button>
+    </div>
+  </div>
+  <div class="prog" id="prog"><div id="pb"></div></div><div class="pt" id="pt"></div>
+  <p class="note">Angka peringkat dan skor keyword hanya tampil di halaman ini. File CSV dan ZIP berisi keyword bersih, urut dari peringkat teratas, tanpa angka. ZIP menyematkan metadata ke JPG dan PNG. Untuk video (MP4/MOV) dan platform yang tidak membaca embed seperti Pngtree, pakai CSV atau tombol Salin di tiap kartu.</p>
+  <div class="cards" id="cards"></div>
+  <section class="creator-links" aria-label="Tautan ZK Creative Studio">
+    <h2>Ikuti &amp; Jelajahi ZK Creative Studio</h2>
+    <p>Temukan update, tool pendukung, dan komunitas ZK.</p>
+    <div class="link-list">
+      <a class="creator-link tiktok" href="https://www.tiktok.com/@ironmenine" target="_blank" rel="noopener noreferrer"><span>🎵</span> TikTok</a>
+      <a class="creator-link lynk" href="https://lynk.id/sepuluhribudesign" target="_blank" rel="noopener noreferrer"><span>🔗</span> Tool lainnya / Lynk.id</a>
+      <a class="creator-link prompt" href="https://zk-stock.github.io/ZK-prompt-generator/" target="_blank" rel="noopener noreferrer"><span>🎨</span> ZK Prompt Generator</a>
+      <a class="creator-link whatsapp" href="https://chat.whatsapp.com/CXVyC8v7zMFG0Ap8H6dJ7X?s=cl&amp;p=a&amp;mlu=4&amp;ilr=4" target="_blank" rel="noopener noreferrer"><span>💬</span> WhatsApp Group</a>
+    </div>
+  </section>
+</main>
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const LIST={gemini:['gemini-2.5-flash'],groq:['meta-llama/llama-4-scout-17b-16e-instruct']};
+const S={prov:'gemini',keys:{gemini:'',groq:''},models:{gemini:'gemini-2.5-flash',groq:'meta-llama/llama-4-scout-17b-16e-instruct'},tl:70,dl:200,kc:30,plat:'adobe',lic:'free',theme:'light'};
+let items=[],uid=0,hideAll=false,bt={total:0,done:0};
+try{const st=JSON.parse(localStorage.getItem('mm_set')||'{}');if(st.key)S.keys.gemini=st.key;if(st.model)S.models.gemini=st.model;const ks=st.keys,ms=st.models;['key','model','keys','models'].forEach(k=>delete st[k]);Object.assign(S,st);Object.assign(S.keys,ks);Object.assign(S.models,ms)}catch(e){}
+const save=()=>{try{localStorage.setItem('mm_set',JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',2600)}
+
+/* ---------- platform CSV ---------- */
+const P={
+ adobe:{n:'Adobe Stock',h:['Filename','Title','Keywords','Category','Releases'],r:(f,t,d,k)=>[f,t,k,'','']},
+ shutter:{n:'Shutterstock',h:['Filename','Description','Keywords','Categories','Editorial','Mature content'],r:(f,t,d,k)=>[f,d||t,k,'','no','no']},
+ vecteezy:{n:'Vecteezy',h:['Filename','Title','Description','Keywords','License','Id'],r:(f,t,d,k)=>[f,t,d,k,S.lic,'']},
+ dreamstime:{n:'Dreamstime',h:['Filename','Title','Description','Keywords'],r:(f,t,d,k)=>[f,t,d,k]},
+ pond5:{n:'Pond5',h:['Filename','Title','Keywords','Description'],r:(f,t,d,k)=>[f,t,k,d]},
+ universal:{n:'Universal',h:['filename','title','description','keywords'],r:(f,t,d,k)=>[f,t,d,k]}
+};
+
+/* ---------- pengaturan ---------- */
+const STEP={tl:5,dl:10,kc:1};
+function sync(){
+ for(const k of ['tl','dl','kc']){$('#v_'+k).textContent=S[k];$('#r_'+k).value=S[k]}
+ $('#prov').value=S.prov;$('#key').value=S.keys[S.prov];$('#keyl').textContent='API key '+(S.prov==='groq'?'Groq':'Gemini');$('#plat').value=S.plat;$('#lic').value=S.lic;
+ $('#licw').style.display=S.plat==='vecteezy'?'':'none';
+ document.documentElement.dataset.theme=S.theme;
+ $('#theme').textContent=S.theme==='dark'?'Mode terang':'Mode gelap';
+ const L=LIST[S.prov];if(!L.includes(S.models[S.prov]))L.push(S.models[S.prov]);$('#model').innerHTML=L.map(m=>`<option>${esc(m)}</option>`).join('');
+ $('#model').value=S.models[S.prov];
+}
+$('#plat').innerHTML=Object.entries(P).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join('');
+if(!localStorage.getItem('mm_set')&&matchMedia('(prefers-color-scheme:dark)').matches)S.theme='dark';
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-s]');if(!b)return;
+ const k=b.dataset.s,r=$('#r_'+k);
+ S[k]=Math.min(+r.max,Math.max(+r.min,S[k]+b.dataset.d*STEP[k]));save();sync();renderAll();
+});
+for(const k of ['tl','dl','kc'])$('#r_'+k).addEventListener('input',e=>{S[k]=+e.target.value;save();sync();renderAll()});
+$('#key').onchange=e=>{S.keys[S.prov]=e.target.value.trim();save()};
+$('#prov').onchange=e=>{S.prov=e.target.value;save();sync()};
+$('#eye').onclick=()=>{const k=$('#key'),s=k.type==='password';k.type=s?'text':'password';$('#eye').textContent=s?'Sembunyi':'Lihat'};
+$('#model').onchange=e=>{S.models[S.prov]=e.target.value;save()};
+$('#plat').onchange=e=>{S.plat=e.target.value;save();sync()};
+$('#lic').onchange=e=>{S.lic=e.target.value;save()};
+$('#theme').onclick=()=>{S.theme=S.theme==='dark'?'light':'dark';save();sync()};
+$('#detect').onclick=async()=>{
+ const key=S.keys[S.prov];if(!key)return toast('Isi API key dulu');
+ try{
+  let ms;
+  if(S.prov==='groq'){
+   const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:'Bearer '+key}});
+   const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);
+   const all=j.data.map(m=>m.id);ms=all.filter(m=>/llama-4|vision|scout|maverick/i.test(m));if(!ms.length)ms=all;
+  }else{
+   const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=100&key='+key);
+   const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);
+   ms=j.models.filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')&&/gemini/.test(m.name)).map(m=>m.name.replace('models/',''));
+  }
+  LIST[S.prov]=ms;
+  if(!ms.includes(S.models[S.prov]))S.models[S.prov]=ms.find(m=>/flash|scout/.test(m))||ms[0];
+  save();sync();toast(ms.length+' model ditemukan');
+ }catch(e){toast('Gagal deteksi: '+e.message)}
+};
+
+/* ---------- upload ---------- */
+const isVid=f=>/^video\//.test(f.type)||/\.(mp4|mov)$/i.test(f.name);
+function addFiles(list){
+ let skip=0;
+ for(const f of list){
+  const v=isVid(f);
+  if(!v&&!/^image\/(jpeg|png|webp)$/.test(f.type)){skip++;continue}
+  items.push({id:++uid,file:f,kind:v?'video':'image',url:URL.createObjectURL(f),status:'wait',title:'',desc:'',kw:[],err:'',hide:false});
+ }
+ if(skip)toast(skip+' file dilewati (format tidak didukung)');
+ renderAll();
+}
+$('#file').onchange=e=>{addFiles(e.target.files);e.target.value=''};
+const dz=$('#drop');
+['dragenter','dragover'].forEach(n=>dz.addEventListener(n,e=>{e.preventDefault();dz.classList.add('on')}));
+['dragleave','drop'].forEach(n=>dz.addEventListener(n,e=>{e.preventDefault();dz.classList.remove('on')}));
+dz.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+
+/* ---------- AI ---------- */
+function drawB64(src,w0,h0,max){
+ const sc=Math.min(1,max/Math.max(w0,h0,1)),c=document.createElement('canvas');
+ c.width=Math.max(1,Math.round(w0*sc));c.height=Math.max(1,Math.round(h0*sc));
+ const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(src,0,0,c.width,c.height);
+ return c.toDataURL('image/jpeg',.82).split(',')[1];
+}
+async function imgFrames(it){
+ const img=new Image();img.src=it.url;await img.decode();
+ return [drawB64(img,img.naturalWidth||1024,img.naturalHeight||1024,1024)];
+}
+function waitEv(el,ev,ms){return new Promise((ok,no)=>{
+ const t=setTimeout(()=>{off();no(new Error('timeout'))},ms),h=()=>{off();ok()},er=()=>{off();no(new Error('decode'))};
+ function off(){clearTimeout(t);el.removeEventListener(ev,h);el.removeEventListener('error',er)}
+ el.addEventListener(ev,h);el.addEventListener('error',er)})}
+async function vidFrames(it){
+ const v=document.createElement('video');
+ v.muted=true;v.playsInline=true;v.preload='auto';v.src=it.url;
+ try{
+  if(v.readyState<2)await waitEv(v,'loadeddata',12000);
+  const w=v.videoWidth,h=v.videoHeight;
+  if(!w||!h)throw new Error('decode');
+  const d=isFinite(v.duration)&&v.duration>0?v.duration:0,out=[];
+  for(const t of d?[.12*d,.45*d,.8*d]:[0]){
+   try{if(t){v.currentTime=t;await waitEv(v,'seeked',5000)}out.push(drawB64(v,w,h,768))}catch(e){}
+  }
+  if(!out.length)out.push(drawB64(v,w,h,768));
+  return out;
+ }catch(e){
+  throw new Error('Video tidak bisa dibaca browser (kemungkinan codec HEVC atau ProRes). Ekspor ulang ke MP4 H.264, atau isi metadata manual.');
+ }finally{v.removeAttribute('src');v.load()}
+}
+const cut=(s,n)=>{s=String(s).trim();if(s.length<=n)return s;const t=s.slice(0,n);return t.slice(0,Math.max(t.lastIndexOf(' '),n*.6|0)).replace(/[,;:\-\s]+$/,'')};
+async function callAI(prompt,fr){
+ const key=S.keys[S.prov],model=S.models[S.prov];
+ for(let a=0;a<3;a++){
+  let res,j;
+  if(S.prov==='groq'){
+   const body={model,temperature:.4,messages:[{role:'user',content:[{type:'text',text:prompt},...fr.slice(0,3).map(b=>({type:'image_url',image_url:{url:'data:image/jpeg;base64,'+b}}))]}],response_format:{type:'json_object'}};
+   res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+key},body:JSON.stringify(body)});
+   j=await res.json();
+   if(res.ok)return j.choices?.[0]?.message?.content||'';
+  }else{
+   res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt},...fr.map(data=>({inline_data:{mime_type:'image/jpeg',data}}))]}],generationConfig:{responseMimeType:'application/json',temperature:.4}})});
+   j=await res.json();
+   if(res.ok)return j.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')||'';
+  }
+  if(![429,500,503].includes(res.status)||a===2)throw new Error(j.error?.message||('HTTP '+res.status));
+  await new Promise(r=>setTimeout(r,4000*(a+1)));
+ }
+}
+async function gen(it){
+ if(!S.keys[S.prov]){it.status='er';it.err='API key belum diisi.';renderCard(it);stats();return}
+ it.status='run';it.err='';renderCard(it);stats();
+ const vid=it.kind==='video';
+ const prompt=`You are a microstock SEO specialist. Look carefully at the ${vid?'video frames (sampled in order from ONE clip; describe the clip, its subject, motion and action)':'image'} and write metadata in English.
+Return ONLY JSON: {"title":string,"description":string,"keywords":[{"k":string,"s":number}]}
+Rules:
+- title: max ${S.tl} characters, front-load the main subject, concrete and descriptive, no brand names, no quotes.
+- description: max ${S.dl} characters, one natural sentence about what is visible, style, and use.
+- keywords: exactly ${S.kc} items, only what is truly visible or clearly implied. Order by search relevance for buyers, most important first. "s" is a relevance score 1-100, descending. Use single words and short phrases, lowercase, no duplicates, no brand names.`;
+ try{
+  const fr=vid?await vidFrames(it):await imgFrames(it);
+  const txt=await callAI(prompt,fr);
+  const o=JSON.parse(txt.replace(/^\s*```(?:json)?|```\s*$/g,'').trim());
+  const seen=new Set();
+  it.kw=(o.keywords||[]).map(x=>typeof x==='string'?{k:x.toLowerCase().trim(),s:0}:{k:String(x.k||'').toLowerCase().trim(),s:Math.round(+x.s||0)})
+   .filter(x=>x.k&&!seen.has(x.k)&&seen.add(x.k)).sort((a,b)=>b.s-a.s);
+  it.title=cut(o.title||'',S.tl);it.desc=cut(o.description||'',S.dl);
+  if(!it.title)throw new Error('AI tidak mengembalikan title.');
+  it.status='ok';
+ }catch(e){it.status='er';it.err=e instanceof SyntaxError?'Balasan AI tidak valid. Coba generate ulang.':(e.message||String(e))}
+ if(bt.total&&bt.done<bt.total)bt.done++;
+ renderCard(it);stats();
+}
+async function runQueue(list){
+ const q=[...list];if(!q.length)return toast('Tidak ada file untuk diproses');
+ if(items.some(i=>i.status==='run'||i.status==='q'))return toast('Masih ada proses berjalan');
+ bt={total:q.length,done:0};
+ q.forEach(i=>{i.status='q';renderCard(i)});stats();
+ const w=async()=>{while(q.length)await gen(q.shift())};
+ await Promise.all([w(),w()]);
+ bt={total:0,done:0};stats();
+ toast('Selesai: '+items.filter(i=>i.status==='ok').length+' berhasil, '+items.filter(i=>i.status==='er').length+' gagal');
+}
+$('#go').onclick=()=>runQueue(items.filter(i=>i.status!=='ok'&&i.status!=='run'));
+$('#retry').onclick=()=>runQueue(items.filter(i=>i.status==='er'));
+$('#hide').onclick=()=>{hideAll=!hideAll;items.forEach(i=>i.hide=hideAll);$('#hide').textContent=hideAll?'Tampilkan metadata':'Sembunyikan metadata';renderAll()};
+$('#clear').onclick=()=>{if(items.length&&confirm('Hapus semua gambar dari daftar?')){items.forEach(i=>URL.revokeObjectURL(i.url));items=[];renderAll()}};
+
+/* ---------- render ---------- */
+function stats(){
+ const n=s=>items.filter(i=>i.status===s).length,run=n('run')+n('q');
+ $('#s_all').textContent=items.length;$('#s_ok').textContent=n('ok');$('#s_er').textContent=n('er');$('#s_run').textContent=run;
+ const p=$('#prog'),t=$('#pt');
+ p.classList.toggle('on',run>0);t.classList.toggle('on',run>0);p.classList.toggle('ind',run>0&&!bt.total);
+ if(run>0){$('#pb').style.width=bt.total?Math.round(bt.done/bt.total*100)+'%':'';t.textContent=bt.total?`Memproses ${bt.done} dari ${bt.total} file...`:'Memproses...'}
+ $('#go').disabled=run>0;$('#retry').disabled=run>0;$('#go').textContent=run>0?'Memproses...':'Generate semua';
+}
+function cardHtml(it){
+ const vid=it.kind==='video',busy=it.status==='run'||it.status==='q';
+ const lab={wait:'Belum diproses',q:'Antre',run:'Memproses',ok:'Berhasil',er:'Gagal'}[it.status];
+ const cls={ok:'ok',er:'er',run:'run',q:'run'}[it.status]||'';
+ let body=`<div class="fn" title="${esc(it.file.name)}">${esc(it.file.name)}</div>`;
+ if(busy)body+='<div class="sk" style="width:90%"></div><div class="sk" style="width:70%"></div><div class="sk" style="width:80%"></div><div class="sk" style="width:55%"></div>';
+ if(it.err)body+=`<div class="err">${esc(it.err)}</div>`;
+ if(it.status==='ok'&&!it.hide){
+  body+=`<div><div class="fl">Title <em data-c="title" class="${it.title.length>S.tl?'over':''}">${it.title.length}/${S.tl}</em></div><textarea rows="2" data-f="title">${esc(it.title)}</textarea></div>
+  <div><div class="fl">Deskripsi <em data-c="desc" class="${it.desc.length>S.dl?'over':''}">${it.desc.length}/${S.dl}</em></div><textarea rows="3" data-f="desc">${esc(it.desc)}</textarea></div>
+  <div><div class="fl">Keyword berperingkat <em>${Math.min(it.kw.length,S.kc)} dipakai dari ${it.kw.length}</em></div><div class="kws">${it.kw.map((x,i)=>`<span class="kw ${i<10?'top':''} ${i>=S.kc?'over':''}"><i>${i+1}</i>${esc(x.k)}${x.s?`<u>${x.s}</u>`:''}<a data-act="rmkw" data-i="${i}" title="Hapus">×</a></span>`).join('')}</div></div>
+  <input class="add" placeholder="Tambah keyword, tekan Enter" data-add>`;
+ }
+ const ft=`<div class="ft">
+  <button class="btn sm" data-act="regen" ${busy?'disabled':''}>Generate ulang</button>
+  ${it.status==='ok'?`<button class="btn sm" data-act="toggle">${it.hide?'Tampilkan metadata':'Sembunyikan metadata'}</button><button class="btn sm" data-act="cp" data-w="title">Salin title</button><button class="btn sm" data-act="cp" data-w="desc">Salin deskripsi</button><button class="btn sm" data-act="cp" data-w="kw">Salin keyword</button>`:''}
+  <button class="btn sm" data-act="del" ${busy?'disabled':''}>Hapus</button></div>`;
+ const media=vid?`<video src="${it.url}" muted loop autoplay playsinline preload="metadata" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'empty',textContent:'Pratinjau video tidak didukung browser'}))"></video><span class="vb">${/\.mov$/i.test(it.file.name)?'MOV':'MP4'}</span>`:`<img src="${it.url}" alt="">`;
+ return `<article class="card" data-id="${it.id}"><div class="th">${media}<span class="pill ${cls}">${lab}</span>${busy?`<div class="ld">${it.status==='q'?'Dalam antrean':'AI sedang membaca'}</div>`:''}</div><div class="bd">${body}${ft}</div></article>`;
+}
+function renderCard(it){
+ const el=document.querySelector(`[data-id="${it.id}"]`);
+ if(!el)return;
+ const t=document.createElement('div');t.innerHTML=cardHtml(it);el.replaceWith(t.firstElementChild);
+}
+function renderAll(){
+ $('#cards').innerHTML=items.length?items.map(cardHtml).join(''):'<div class="empty">Belum ada gambar. Upload untuk mulai.</div>';
+ stats();
+}
+const find=e=>{const c=e.target.closest('.card');return c&&items.find(i=>i.id==c.dataset.id)};
+$('#cards').addEventListener('click',e=>{
+ const b=e.target.closest('[data-act]');if(!b)return;
+ const it=find(e);if(!it)return;
+ const a=b.dataset.act;
+ if(a==='regen')gen(it);
+ else if(a==='toggle'){it.hide=!it.hide;renderCard(it)}
+ else if(a==='del'){URL.revokeObjectURL(it.url);items=items.filter(x=>x!==it);renderAll()}
+ else if(a==='rmkw'){it.kw.splice(+b.dataset.i,1);renderCard(it)}
+ else if(a==='cp'){const w=b.dataset.w;navigator.clipboard.writeText(w==='kw'?kwOf(it).join(', '):it[w]).then(()=>toast('Tersalin'),()=>toast('Gagal menyalin'))}
+});
+$('#cards').addEventListener('input',e=>{
+ const f=e.target.dataset.f;if(!f)return;
+ const it=find(e);it[f]=e.target.value;
+ const lim=f==='title'?S.tl:S.dl,c=e.target.closest('div').querySelector('[data-c]');
+ c.textContent=it[f].length+'/'+lim;c.classList.toggle('over',it[f].length>lim);
+});
+$('#cards').addEventListener('keydown',e=>{
+ if(e.key!=='Enter'||!e.target.matches('[data-add]'))return;
+ const it=find(e);
+ e.target.value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean).forEach(k=>{if(!it.kw.some(x=>x.k===k))it.kw.push({k,s:0})});
+ renderCard(it);
+});
+
+/* ---------- ekspor ---------- */
+const done=()=>items.filter(i=>i.status==='ok');
+const kwOf=it=>it.kw.slice(0,S.kc).map(x=>x.k);
+function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+$('#csv').onclick=()=>{
+ const ok=done();if(!ok.length)return toast('Belum ada metadata yang berhasil');
+ const p=P[S.plat],q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+ const rows=[p.h.map(q).join(',')].concat(ok.map(it=>p.r(it.file.name,it.title,it.desc,kwOf(it).join(', ')).map(q).join(',')));
+ download(`metadata-${S.plat}.csv`,new Blob(['\ufeff'+rows.join('\r\n')],{type:'text/csv'}));
+};
+const T=new TextEncoder(),D=new TextDecoder();
+const CT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc=u=>{let c=~0;for(let i=0;i<u.length;i++)c=CT[(c^u[i])&255]^(c>>>8);return ~c>>>0};
+const cat=(...a)=>{const o=new Uint8Array(a.reduce((s,x)=>s+x.length,0));let p=0;for(const x of a){o.set(x,p);p+=x.length}return o};
+const xe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const xmp=m=>`<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?><x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title><rdf:Alt><rdf:li xml:lang="x-default">${xe(m.t)}</rdf:li></rdf:Alt></dc:title><dc:description><rdf:Alt><rdf:li xml:lang="x-default">${xe(m.d)}</rdf:li></rdf:Alt></dc:description><dc:subject><rdf:Bag>${m.k.map(k=>`<rdf:li>${xe(k)}</rdf:li>`).join('')}</rdf:Bag></dc:subject></rdf:Description></rdf:RDF></x:xmpmeta><?xpacket end="w"?>`;
+function iptc(m){
+ const ds=(n,s)=>{const b=T.encode(s);return cat(new Uint8Array([0x1C,2,n,b.length>>8,b.length&255]),b)};
+ const parts=[new Uint8Array([0x1C,1,90,0,3,0x1B,0x25,0x47]),ds(5,m.t),ds(105,m.t),ds(120,m.d),...m.k.map(k=>ds(25,k))];
+ let data=cat(...parts);if(data.length%2)data=cat(data,new Uint8Array([0]));
+ const n=data.length;
+ return cat(T.encode('Photoshop 3.0\0'),T.encode('8BIM'),new Uint8Array([4,4,0,0,n>>>24,(n>>>16)&255,(n>>>8)&255,n&255]),data);
+}
+const seg=(mk,d)=>{const l=d.length+2;return cat(new Uint8Array([0xFF,mk,l>>8,l&255]),d)};
+function embedJpg(buf,m){
+ const u=new Uint8Array(buf);if(u[0]!==0xFF||u[1]!==0xD8)return u;
+ const kept=[];let p=2;
+ while(p<u.length&&u[p]===0xFF&&u[p+1]!==0xDA){
+  const mk=u[p+1],len=(u[p+2]<<8)|u[p+3],s=u.subarray(p,p+2+len);
+  const isX=mk===0xE1&&D.decode(s.subarray(4,32)).startsWith('http://ns.adobe.com/xap');
+  if(mk!==0xED&&!isX)kept.push({mk,s});
+  p+=2+len;
+ }
+ let at=0;while(at<kept.length&&(kept[at].mk===0xE0||kept[at].mk===0xE1))at++;
+ const ours=[{s:seg(0xE1,cat(T.encode('http://ns.adobe.com/xap/1.0/\0'),T.encode(xmp(m))))},{s:seg(0xED,iptc(m))}];
+ kept.splice(at,0,...ours);
+ return cat(u.subarray(0,2),...kept.map(x=>x.s),u.subarray(p));
+}
+function embedPng(buf,m){
+ const u=new Uint8Array(buf);
+ const data=cat(T.encode('XML:com.adobe.xmp\0'),new Uint8Array([0,0,0,0]),T.encode(xmp(m)));
+ const type=T.encode('iTXt'),n=data.length,td=cat(type,data),c=crc(td);
+ const ch=cat(new Uint8Array([n>>>24,(n>>>16)&255,(n>>>8)&255,n&255]),td,new Uint8Array([c>>>24,(c>>>16)&255,(c>>>8)&255,c&255]));
+ return cat(u.subarray(0,33),ch,u.subarray(33));
+}
+function zipStore(files){
+ const loc=[],cen=[];let off=0;
+ for(const f of files){
+  const nm=T.encode(f.name),c=crc(f.data),n=f.data.length;
+  const h=new DataView(new ArrayBuffer(30));
+  h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint32(14,c,true);h.setUint32(18,n,true);h.setUint32(22,n,true);h.setUint16(26,nm.length,true);
+  loc.push(new Uint8Array(h.buffer),nm,f.data);
+  const g=new DataView(new ArrayBuffer(46));
+  g.setUint32(0,0x02014b50,true);g.setUint16(4,20,true);g.setUint16(6,20,true);g.setUint16(8,0x0800,true);g.setUint32(16,c,true);g.setUint32(20,n,true);g.setUint32(24,n,true);g.setUint16(28,nm.length,true);g.setUint32(42,off,true);
+  cen.push(new Uint8Array(g.buffer),nm);
+  off+=30+nm.length+n;
+ }
+ const cs=cen.reduce((s,x)=>s+x.length,0),e=new DataView(new ArrayBuffer(22));
+ e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+ return new Blob([...loc,...cen,new Uint8Array(e.buffer)],{type:'application/zip'});
+}
+$('#zip').onclick=async()=>{
+ const ok=done();if(!ok.length)return toast('Belum ada metadata yang berhasil');
+ const files=[],used=new Set(),vn=ok.filter(i=>i.kind==='video').length;
+ ok.splice(0,ok.length,...ok.filter(i=>i.kind!=='video'));
+ if(!ok.length)return toast('Video tidak bisa di-embed. Pakai CSV.');
+ for(const it of ok){
+  const m={t:it.title,d:it.desc,k:kwOf(it)},buf=await it.file.arrayBuffer();
+  const data=it.file.type==='image/jpeg'?embedJpg(buf,m):it.file.type==='image/png'?embedPng(buf,m):new Uint8Array(buf);
+  let name=it.file.name,i=1;while(used.has(name))name=it.file.name.replace(/(\.\w+)$/,`-${i++}$1`);
+  used.add(name);files.push({name,data});
+ }
+ download('gambar-metadata.zip',zipStore(files));
+ if(vn)toast(vn+' video tidak ikut ZIP. Pakai CSV untuk video.');else if(ok.some(i=>i.file.type==='image/webp'))toast('File WEBP masuk tanpa embed. Pakai CSV untuk file tersebut.');
+};
+
+sync();renderAll();
+</script>
+</body>
+</html>
