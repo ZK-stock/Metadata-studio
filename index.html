@@ -129,6 +129,16 @@ textarea{width:100%;resize:vertical;padding:8px 10px;border:1px solid var(--bd);
 [data-theme=dark] .creator-link.tiktok{background:#25283b;color:#f3f4f6;border-color:#414563}
 @media(max-width:600px){.creator-links{padding:14px}.link-list{gap:8px}.creator-link{flex:1 1 145px;justify-content:center}}
 
+
+/* ===== Iklan Adsterra ===== */
+.ad-slot{margin:32px auto 8px;text-align:center;max-width:100%;clear:both}
+.ad-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
+.ad-box{display:flex;justify-content:center;align-items:center;max-width:100%;overflow:hidden;margin:0 auto}
+.ad-300{min-height:250px;width:300px}
+.ad-320{min-height:50px;width:320px}
+.ad-native{width:100%;max-width:728px;min-height:60px}
+.ad-native>div{width:100%}
+@media(max-width:340px){main{padding-left:8px;padding-right:8px}}
 </style>
 </head>
 <body>
@@ -176,6 +186,14 @@ textarea{width:100%;resize:vertical;padding:8px 10px;border:1px solid var(--bd);
   <div class="prog" id="prog"><div id="pb"></div></div><div class="pt" id="pt"></div>
   <p class="note">Angka peringkat dan skor keyword hanya tampil di halaman ini. File CSV dan ZIP berisi keyword bersih, urut dari peringkat teratas, tanpa angka. ZIP menyematkan metadata ke JPG dan PNG. Untuk video (MP4/MOV) dan platform yang tidak membaca embed seperti Pngtree, pakai CSV atau tombol Salin di tiap kartu.</p>
   <div class="cards" id="cards"></div>
+  <!-- IKLAN 1: Native Banner (di bawah hasil metadata) -->
+  <div class="ad-slot" id="ad-native-wrap">
+    <span class="ad-label">Iklan</span>
+    <div class="ad-box ad-native">
+      <script async="async" data-cfasync="false" src="https://bicea.org/21/63e48fd7f100d7c30fc8d2d5344a25e0"></script>
+      <div id="container-63e48fd7f100d7c30fc8d2d5344a25e0"></div>
+    </div>
+  </div>
   <section class="creator-links" aria-label="Tautan ZK Creative Studio">
     <h2>Ikuti &amp; Jelajahi ZK Creative Studio</h2>
     <p>Temukan update, tool pendukung, dan komunitas ZK.</p>
@@ -186,6 +204,38 @@ textarea{width:100%;resize:vertical;padding:8px 10px;border:1px solid var(--bd);
       <a class="creator-link whatsapp" href="https://chat.whatsapp.com/CXVyC8v7zMFG0Ap8H6dJ7X?s=cl&amp;p=a&amp;mlu=4&amp;ilr=4" target="_blank" rel="noopener noreferrer"><span>💬</span> WhatsApp Group</a>
     </div>
   </section>
+  <!-- IKLAN 2: Banner 300x250 (di bawah tautan, jauh dari tombol) -->
+  <div class="ad-slot" id="ad-300-wrap">
+    <span class="ad-label">Iklan</span>
+    <div class="ad-box ad-300">
+      <script>
+        atOptions = {
+          'key' : 'cfea5f7c4b894192f1de9b024b601ec8',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      </script>
+      <script src="https://bicea.org/22/cfea5f7c4b894192f1de9b024b601ec8"></script>
+    </div>
+  </div>
+  <!-- IKLAN 3: Banner 320x50 (footer) -->
+  <div class="ad-slot" id="ad-320-wrap">
+    <span class="ad-label">Iklan</span>
+    <div class="ad-box ad-320">
+      <script>
+        atOptions = {
+          'key' : '62820856b03174c6559541cf2430d40d',
+          'format' : 'iframe',
+          'height' : 50,
+          'width' : 320,
+          'params' : {}
+        };
+      </script>
+      <script src="https://bicea.org/22/62820856b03174c6559541cf2430d40d"></script>
+    </div>
+  </div>
 </main>
 <div id="toast"></div>
 
