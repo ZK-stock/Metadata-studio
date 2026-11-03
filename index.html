@@ -566,5 +566,41 @@ html{min-height:100%}
 }catch(e){console.warn('ZK upgrade:',e)}})();
 </script>
 <!-- ===== ZK UPGRADE END ===== -->
+<script id="zk-embed-patch">
+(function(){try{
+ /* Hapus kata terlarang Vecteezy (vector, svg, eps) dari teks yang di-embed */
+ const noVec=s=>String(s??'')
+  .replace(/\b(?:vector\w*|svg|eps)\b(?:[-\s]*(?:based|style|art)\b)*/gi,' ')
+  .replace(/[(\[]\s*[)\]]/g,'').replace(/\s{2,}/g,' ').replace(/\s+([,.;:!?])/g,'$1')
+  .replace(/^[\s,;:\-–]+|[\s,;:\-–]+$/g,'').trim();
+ const cleanKw=it=>{const seen=new Set();return it.kw.map(x=>noVec(x.k).toLowerCase()).filter(k=>k&&!seen.has(k)&&seen.add(k)).slice(0,S.kc)};
+ const kind=u=>u[0]===0xFF&&u[1]===0xD8?'jpg':(u[0]===0x89&&u[1]===0x50&&u[2]===0x4E&&u[3]===0x47?'png':'');
+
+ /* Tombol ZIP (dibuat lagi kalau belum ada) */
+ let z=document.querySelector('#zip');
+ if(!z){const c=document.querySelector('#csv');z=document.createElement('button');z.className='btn';z.id='zip';z.textContent='Download ZIP (embed)';c.insertAdjacentElement('afterend',z)}
+
+ z.onclick=async()=>{
+  const list=done().filter(i=>i.kind!=='video');
+  if(!list.length)return toast(done().length?'Videos cannot be embedded. Use CSV.':'No successful metadata yet');
+  const label=z.textContent;z.disabled=true;z.textContent='Packing...';
+  try{
+   const files=[],used=new Set();let raw=0;
+   for(const it of list){
+    const u=new Uint8Array(await it.file.arrayBuffer()),k=kind(u);
+    const m={t:noVec(it.title)||it.title,d:noVec(it.desc)||it.desc,k:cleanKw(it)};
+    const data=k==='jpg'?embedJpg(u,m):k==='png'?embedPng(u,m):(raw++,u);
+    let name=it.file.name,n=1;while(used.has(name))name=it.file.name.replace(/(\.\w+)$/,`-${n++}$1`);
+    used.add(name);files.push({name,data});
+   }
+   download('zk-metadata.zip',zipStore(files));
+   const vn=done().length-list.length;
+   toast(vn?vn+' video(s) not included. Use CSV for videos.':raw?raw+' file(s) added without embedding (WEBP). Use CSV.':'ZIP ready');
+  }catch(e){toast('ZIP failed: '+(e.message||e))}
+  finally{z.disabled=false;z.textContent=label}
+ };
+}catch(e){console.warn('ZK embed patch:',e)}})();
+</script>
+<!-- ===== ZK EMBED PATCH END ===== -->
 </body>
 </html>
