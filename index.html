@@ -599,8 +599,100 @@ html{min-height:100%}
   }catch(e){toast('ZIP failed: '+(e.message||e))}
   finally{z.disabled=false;z.textContent=label}
  };
+}catch(e){console.warn('<!-- ===== ZK EMBED PATCH v2 START: GANTI blok "ZK EMBED PATCH" lama dengan blok ini (tempel sebelum </body>, setelah blok ZK UPGRADE). ===== -->
+<script id="zk-embed-patch">
+(function(){try{
+ /* Hapus kata terlarang Vecteezy (vector, svg, eps) dari teks yang di-embed */
+ const noVec=s=>String(s??'')
+  .replace(/\b(?:vector\w*|svg|eps)\b(?:[-\s]*(?:based|style|art)\b)*/gi,' ')
+  .replace(/[(\[]\s*[)\]]/g,'').replace(/\s{2,}/g,' ')
+  .replace(/\s+([,.;:!?])/g,'$1')
+  .replace(/^[\s,;:\-–]+|[\s,;:\-–]+$/g,'').trim();
+ const cleanKw=it=>{const seen=new Set();return it.kw.map(x=>noVec(x.k).toLowerCase()).filter(k=>k&&!seen.has(k)&&seen.add(k)).slice(0,S.kc)};
+ const kind=u=>u[0]===0xFF&&u[1]===0xD8?'jpg':(u[0]===0x89&&u[1]===0x50&&u[2]===0x4E&&u[3]===0x47?'png':'');
+
+ /* CRC32 bertahap (file besar dibaca per potongan 8 MB, tidak dimuat utuh ke memori) */
+ const CH=8*1024*1024;
+ const upd=(c,u)=>{for(let i=0;i<u.length;i++)c=CT[(c^u[i])&255]^(c>>>8);return c};
+ const crcOf=async parts=>{let c=~0;for(const p of parts){if(p instanceof Blob){for(let o=0;o<p.size;o+=CH)c=upd(c,new Uint8Array(await p.slice(o,o+CH).arrayBuffer()))}else c=upd(c,p)}return ~c>>>0};
+
+ /* Video MP4/MOV: tulis XMP sebagai box "uuid" di akhir file (standar Adobe XMP).
+    Box XMP lama dibuang agar tidak dobel. Isi video tidak diubah sama sekali. */
+ const XMPID=[0xBE,0x7A,0xCF,0xCB,0x97,0xA9,0x42,0xE8,0x9C,0x71,0x99,0x94,0x91,0xE3,0xAF,0xAC];
+ async function embedVideo(file,m){
+  const rd=async(o,n)=>new Uint8Array(await file.slice(o,Math.min(o+n,file.size)).arrayBuffer());
+  const skip=[];let o=0,first='';
+  while(o<file.size){
+   const h=await rd(o,32);if(h.length<8)return null;
+   const dv=new DataView(h.buffer,h.byteOffset,h.byteLength);
+   let sz=dv.getUint32(0);const ty=D.decode(h.subarray(4,8));
+   if(!first)first=ty;
+   if(sz===1){if(h.length<16)return null;sz=Number(dv.getBigUint64(8))}else if(sz===0)return null;
+   if(sz<8||o+sz>file.size)return null;
+   if(ty==='uuid'&&h.length>=24&&XMPID.every((b,i)=>h[8+i]===b))skip.push([o,sz]);
+   o+=sz;
+  }
+  if(!['ftyp','moov','mdat','wide','free','skip','pnot'].includes(first))return null;
+  const body=T.encode(xmp(m)),n=8+16+body.length;
+  const box=cat(new Uint8Array([n>>>24,(n>>>16)&255,(n>>>8)&255,n&255]),T.encode('uuid'),new Uint8Array(XMPID),body);
+  const parts=[];let pos=0,size=0;
+  for(const [a,l] of skip){if(a>pos){parts.push(file.slice(pos,a));size+=a-pos}pos=a+l}
+  if(pos<file.size){parts.push(file.slice(pos));size+=file.size-pos}
+  parts.push(box);size+=box.length;
+  return {parts,size};
+ }
+
+ /* ZIP (tanpa kompresi) yang menerima potongan Blob, jadi video besar tidak menumpuk di memori */
+ function zipBlob(files){
+  const out=[],cen=[];let off=0;
+  for(const f of files){
+   const nm=T.encode(f.name);
+   const h=new DataView(new ArrayBuffer(30));
+   h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint32(14,f.crc,true);h.setUint32(18,f.size,true);h.setUint32(22,f.size,true);h.setUint16(26,nm.length,true);
+   out.push(new Uint8Array(h.buffer),nm,...f.parts);
+   const g=new DataView(new ArrayBuffer(46));
+   g.setUint32(0,0x02014b50,true);g.setUint16(4,20,true);g.setUint16(6,20,true);g.setUint16(8,0x0800,true);g.setUint32(16,f.crc,true);g.setUint32(20,f.size,true);g.setUint32(24,f.size,true);g.setUint16(28,nm.length,true);g.setUint32(42,off,true);
+   cen.push(new Uint8Array(g.buffer),nm);
+   off+=30+nm.length+f.size;
+   if(off>0xFFFFFFFF)throw new Error('ZIP is over 4 GB. Process fewer files per ZIP.');
+  }
+  const cs=cen.reduce((s,x)=>s+x.length,0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  return new Blob([...out,...cen,new Uint8Array(e.buffer)],{type:'application/zip'});
+ }
+
+ /* Tombol ZIP (dibuat lagi kalau belum ada) */
+ let z=document.querySelector('#zip');
+ if(!z){const c=document.querySelector('#csv');z=document.createElement('button');z.className='btn';z.id='zip';z.textContent='Download ZIP (embed)';c.insertAdjacentElement('afterend',z)}
+
+ z.onclick=async()=>{
+  const list=done();
+  if(!list.length)return toast('No successful metadata yet');
+  const label=z.textContent;z.disabled=true;
+  try{
+   const files=[],used=new Set();let raw=0,total=0,i=0;
+   for(const it of list){
+    z.textContent=`Packing ${++i}/${list.length}...`;
+    const m={t:noVec(it.title)||it.title,d:noVec(it.desc)||it.desc,k:cleanKw(it)};
+    let parts,size;
+    if(it.kind==='video'){
+     const r=await embedVideo(it.file,m);
+     if(r){parts=r.parts;size=r.size}else{raw++;parts=[it.file];size=it.file.size}
+    }else{
+     const u=new Uint8Array(await it.file.arrayBuffer()),k=kind(u);
+     const d=k==='jpg'?embedJpg(u,m):k==='png'?embedPng(u,m):(raw++,u);
+     parts=[d];size=d.length;
+    }
+    total+=size;if(total>3.9e9)throw new Error('Total size is over 4 GB. Process fewer files per ZIP.');
+    let name=it.file.name,n=1;while(used.has(name))name=it.file.name.replace(/(\.\w+)$/,`-${n++}$1`);
+    used.add(name);files.push({name,parts,size,crc:await crcOf(parts)});
+   }
+   const a=document.createElement('a');a.href=URL.createObjectURL(zipBlob(files));a.download='zk-metadata.zip';a.click();
+   setTimeout(()=>URL.revokeObjectURL(a.href),120000);
+   toast(raw?raw+' file(s) added without embedding (WEBP or unsupported video). Use CSV for them.':'ZIP ready');
+  }catch(e){toast('ZIP failed: '+(e.message||e))}
+  finally{z.disabled=false;z.textContent=label}
+ };
 }catch(e){console.warn('ZK embed patch:',e)}})();
 </script>
-<!-- ===== ZK EMBED PATCH END ===== -->
-</body>
-</html>
+<!-- ===== ZK EMBED PATCH v2 END ===== -->
