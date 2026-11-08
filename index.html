@@ -199,28 +199,15 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',2600)}
 
 /* ---------- platform CSV ---------- */
-const clean=s=>String(s==null?'':s).replace(/[\r\n\t]+/g,' ').replace(/\s+/g,' ').trim();
-const plain=s=>clean(s).replace(/[,;:"“”‘’|\\\/<>*?]/g,' ').replace(/\s+/g,' ').trim();
-const kwAscii=k=>String(k).toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
-const SS_CATS=['Abstract','Animals/Wildlife','Arts','Backgrounds/Textures','Beauty/Fashion','Buildings/Landmarks','Business/Finance','Celebrities','Education','Food and drink','Healthcare/Medical','Holidays','Industrial','Interiors','Miscellaneous','Nature','Objects','Parks/Outdoor','People','Religion','Science','Signs/Symbols','Sports/Recreation','Technology','Transportation','Vintage'];
-const ssCats=it=>((it.cat&&it.cat.s)||[]).map(c=>SS_CATS.find(x=>x.toLowerCase()===String(c).toLowerCase().trim())).filter(Boolean).slice(0,2);
 const P={
- adobe:{n:'Adobe Stock',h:['Filename','Title','Keywords','Category','Releases'],
-  r:(f,t,d,k,it)=>[f,plain(t),k.slice(0,50).join(', '),(it.cat&&it.cat.a>=1&&it.cat.a<=21)?it.cat.a:'',''],
-  chk:(f,t,d,k,it)=>{const w=[];if(it.kind==='image'&&plain(t).length>70)w.push(f+': title is over 70 characters (Adobe limit for images)');if(!(it.cat&&it.cat.a>=1))w.push(f+': no category, choose one in the Adobe portal');return w}},
- shutter:{n:'Shutterstock',h:['Filename','Description','Keywords','Categories'],
-  r:(f,t,d,k,it)=>[f,cut(clean(d)||clean(t),200),k.slice(0,50).join(','),ssCats(it).join(',')],
-  chk:(f,t,d,k,it)=>{const w=[];if(!ssCats(it).length)w.push(f+': Shutterstock requires 1-2 categories, choose them in the portal');if(k.length<7)w.push(f+': fewer than 7 keywords (Shutterstock minimum)');return w}},
- vecteezy:{n:'Vecteezy',h:['Filename','Title','Description','Keywords','License'],
-  r:(f,t,d,k)=>[f,clean(t).replace(/[^A-Za-z0-9 .,'\-]/g,' ').replace(/\s+/g,' ').trim().slice(0,200),clean(d),k.map(kwAscii).filter(Boolean).slice(0,50).join(','),S.lic],
-  chk:(f,t,d,k)=>{const w=[];if(!/^[A-Za-z0-9\-]+$/.test(f.replace(/\.[^.]+$/,'')))w.push(f+': Vecteezy matches most reliably when the file name uses only letters, numbers and hyphens');if(k.length<5)w.push(f+': fewer than 5 keywords (Vecteezy minimum)');return w}},
- freepik:{n:'Freepik / Magnific',sep:';',all:true,h:['File name','Title','Keywords'],
-  r:(f,t,d,k)=>[f,clean(t),k.slice(0,50).join(',')],
-  chk:(f,t,d,k)=>k.length<7?[f+': fewer than 7 keywords (Magnific minimum)']:[]},
- pngtree:{n:'Pngtree (generic, unverified)',h:['Filename','Title','Keywords'],r:(f,t,d,k)=>[f,clean(t),k.join(', ')]},
- dreamstime:{n:'Dreamstime (generic, unverified)',h:['Filename','Title','Description','Keywords'],r:(f,t,d,k)=>[f,clean(t),clean(d),k.join(', ')]},
- pond5:{n:'Pond5 (generic, unverified)',h:['Filename','Title','Keywords','Description'],r:(f,t,d,k)=>[f,clean(t).slice(0,80),k.join(', '),clean(d)]},
- universal:{n:'Universal',h:['filename','title','description','keywords'],r:(f,t,d,k)=>[f,clean(t),clean(d),k.join(', ')]}
+ adobe:{n:'Adobe Stock',h:['Filename','Title','Keywords','Category','Releases'],r:(f,t,d,k)=>[f,t,k,'','']},
+ shutter:{n:'Shutterstock',h:['Filename','Description','Keywords','Categories','Editorial','Mature content'],r:(f,t,d,k)=>[f,d||t,k,'','no','no']},
+ vecteezy:{n:'Vecteezy',h:['Filename','Title','Description','Keywords','License','Id'],r:(f,t,d,k)=>[f,t,d,k,S.lic,'']},
+ dreamstime:{n:'Dreamstime',h:['Filename','Title','Description','Keywords'],r:(f,t,d,k)=>[f,t,d,k]},
+ pond5:{n:'Pond5',h:['Filename','Title','Keywords','Description'],r:(f,t,d,k)=>[f,t,k,d]},
+ freepik:{n:'Freepik',h:['File name','Title','Keywords'],r:(f,t,d,k)=>[f,t,k]},
+ pngtree:{n:'Pngtree',h:['Filename','Title','Keywords'],r:(f,t,d,k)=>[f,t,k]},
+ universal:{n:'Universal',h:['filename','title','description','keywords'],r:(f,t,d,k)=>[f,t,d,k]}
 };
 
 /* ---------- pengaturan ---------- */
@@ -354,7 +341,7 @@ Rules:
   const seen=new Set();
   it.kw=(o.keywords||[]).map(x=>typeof x==='string'?{k:x.toLowerCase().trim(),s:0}:{k:String(x.k||'').toLowerCase().trim(),s:Math.round(+x.s||0)})
    .filter(x=>x.k&&!seen.has(x.k)&&seen.add(x.k)).sort((a,b)=>b.s-a.s);
-  it.title=cut(o.title||'',S.tl);it.desc=cut(o.description||'',S.dl);it.cat={a:parseInt(o.cat_adobe)||0,s:Array.isArray(o.cat_shutter)?o.cat_shutter:[]};
+  it.title=cut(o.title||'',S.tl);it.desc=cut(o.description||'',S.dl);
   if(!it.title)throw new Error('The AI did not return a title.');
   it.status='ok';
  }catch(e){it.status='er';it.err=e instanceof SyntaxError?'Invalid AI reply. Try generating again.':(e.message||String(e))}
@@ -444,16 +431,9 @@ const kwOf=it=>it.kw.slice(0,S.kc).map(x=>x.k);
 function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
 $('#csv').onclick=()=>{
  const ok=done();if(!ok.length)return toast('No successful metadata yet');
- const p=P[S.plat],sep=p.sep||',',warn=[];
- const q=v=>{v=String(v==null?'':v);return(p.all||new RegExp('["\\r\\n'+sep+']').test(v))?'"'+v.replace(/"/g,'""')+'"':v};
- const lines=[p.h.join(sep)];
- ok.forEach(it=>{const a=[it.file.name,it.title,it.desc,kwOf(it),it];lines.push(p.r(...a).map(q).join(sep));if(p.chk)warn.push(...p.chk(...a))});
- download(`metadata-${S.plat}.csv`,new Blob([lines.join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'}));
- let box=document.getElementById('csvwarn');if(!box){box=document.createElement('div');box.id='csvwarn';$('#cards').before(box)}
- const u=[...new Set(warn)];
- box.className=u.length?'bad':'good';
- box.innerHTML=u.length?`<b>⚠️ CSV check for ${p.n} (${u.length} notice${u.length>1?'s':''}):</b><ul>${u.slice(0,8).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${u.length>8?`<div>+${u.length-8} more</div>`:''}`:(/unverified/.test(p.n)?`ℹ️ CSV for ${p.n}: ${ok.length} row(s). No official template was found for this platform, so check the column names against its own template.`:`✅ CSV for ${p.n}: ${ok.length} row(s), header and format match the platform template.`);
- toast('CSV downloaded');
+ const p=P[S.plat],q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+ const rows=[p.h.map(q).join(',')].concat(ok.map(it=>p.r(it.file.name,it.title,it.desc,kwOf(it).join(', ')).map(q).join(',')));
+ download(`metadata-${S.plat}.csv`,new Blob(['\ufeff'+rows.join('\r\n')],{type:'text/csv'}));
 };
 const T=new TextEncoder(),D=new TextDecoder();
 const CT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
@@ -549,10 +529,6 @@ header{background:linear-gradient(90deg,var(--pn),color-mix(in srgb,var(--ac2) 7
 .f label b,.f label button{margin-left:auto}
 html{min-height:100%}
 .fl{justify-content:flex-start;gap:6px}.fl em{margin-left:auto}
-#csvwarn.bad{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:10px 14px;margin:10px 0;font-size:13px}
-#csvwarn.good{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;border-radius:12px;padding:10px 14px;margin:10px 0;font-size:13px;font-weight:600}
-#csvwarn ul{margin:6px 0 0;padding-left:18px}
-[data-theme=dark] #csvwarn.bad{background:#3a2c0f;border-color:#6b4e12;color:#fbbf24}[data-theme=dark] #csvwarn.good{background:#0f2e22;border-color:#14532d;color:#4ade80}
 /* Ikon label pengaturan */
 .panel h2::before{content:"⚙️ "}.creator-links h2::before{content:"🌟 "}
 .grid3>.f:nth-child(1) label::before{content:"🤖 "}.grid3>.f:nth-child(2) label::before{content:"🔑 "}.grid3>.f:nth-child(3) label::before{content:"🧠 "}
@@ -586,9 +562,106 @@ html{min-height:100%}
  /* Keyword tanpa kata terlarang Vecteezy (vector, svg, eps) */
  if(typeof cardHtml==='function'){const o=cardHtml;cardHtml=function(it){if(it&&it.kw)it.kw=it.kw.filter(x=>!/vector|^svg$|^eps$/i.test(x.k));return o(it)}}
  /* Prompt diperkuat: hanya isi gambar/video yang benar-benar terlihat, bahasa Inggris */
- if(typeof callAI==='function'){const o=callAI;callAI=function(p,fr){return o(p+'\nStrict: base every word only on what is actually visible in the provided frames. Never guess hidden details and never use the file name. Never use the words vector, svg or eps. Write everything in natural English.\nAlso add two extra fields to the same JSON: "cat_adobe" (one integer: 1 Animals, 2 Buildings and Architecture, 3 Business, 4 Drinks, 5 The Environment, 6 States of Mind, 7 Food, 8 Graphic Resources, 9 Hobbies and Leisure, 10 Industry, 11 Landscapes, 12 Lifestyle, 13 People, 14 Plants and Flowers, 15 Culture and Religion, 16 Science, 17 Social Issues, 18 Sports, 19 Technology, 20 Transport, 21 Travel) and "cat_shutter" (an array with 1 or 2 names chosen only from: Abstract, Animals/Wildlife, Arts, Backgrounds/Textures, Beauty/Fashion, Buildings/Landmarks, Business/Finance, Celebrities, Education, Food and drink, Healthcare/Medical, Holidays, Industrial, Interiors, Miscellaneous, Nature, Objects, Parks/Outdoor, People, Religion, Science, Signs/Symbols, Sports/Recreation, Technology, Transportation, Vintage).',fr)}}
+ if(typeof callAI==='function'){const o=callAI;callAI=function(p,fr){return o(p+'\nStrict: base every word only on what is actually visible in the provided frames. Never guess hidden details and never use the file name. Never use the words vector, svg or eps. Write everything in natural English.',fr)}}
 }catch(e){console.warn('ZK upgrade:',e)}})();
 </script>
 <!-- ===== ZK UPGRADE END ===== -->
+<!-- ===== ZK EMBED PATCH v2 START: GANTI blok "ZK EMBED PATCH" lama dengan blok ini (tempel sebelum </body>, setelah blok ZK UPGRADE). ===== -->
+<script id="zk-embed-patch">
+(function(){try{
+ /* Hapus kata terlarang Vecteezy (vector, svg, eps) dari teks yang di-embed */
+ const noVec=s=>String(s??'')
+  .replace(/\b(?:vector\w*|svg|eps\d*)\b(?:[-\s]*(?:based|style|art)\b)*/gi,' ').replace(/(^|\s)[-–]+(?=\w)/g,'$1')
+  .replace(/[(\[]\s*[)\]]/g,'').replace(/\s{2,}/g,' ')
+  .replace(/\s+([,.;:!?])/g,'$1')
+  .replace(/^[\s,;:\-–]+|[\s,;:\-–]+$/g,'').trim();
+ const cleanKw=it=>{const seen=new Set();return it.kw.map(x=>noVec(x.k).toLowerCase()).filter(k=>k&&!seen.has(k)&&seen.add(k)).slice(0,S.kc)};
+ const kind=u=>u[0]===0xFF&&u[1]===0xD8?'jpg':(u[0]===0x89&&u[1]===0x50&&u[2]===0x4E&&u[3]===0x47?'png':'');
+
+ /* CRC32 bertahap (file besar dibaca per potongan 8 MB, tidak dimuat utuh ke memori) */
+ const CH=8*1024*1024;
+ const upd=(c,u)=>{for(let i=0;i<u.length;i++)c=CT[(c^u[i])&255]^(c>>>8);return c};
+ const crcOf=async parts=>{let c=~0;for(const p of parts){if(p instanceof Blob){for(let o=0;o<p.size;o+=CH)c=upd(c,new Uint8Array(await p.slice(o,o+CH).arrayBuffer()))}else c=upd(c,p)}return ~c>>>0};
+
+ /* Video MP4/MOV: tulis XMP sebagai box "uuid" di akhir file (standar Adobe XMP).
+    Box XMP lama dibuang agar tidak dobel. Isi video tidak diubah sama sekali. */
+ const XMPID=[0xBE,0x7A,0xCF,0xCB,0x97,0xA9,0x42,0xE8,0x9C,0x71,0x99,0x94,0x91,0xE3,0xAF,0xAC];
+ async function embedVideo(file,m){
+  const rd=async(o,n)=>new Uint8Array(await file.slice(o,Math.min(o+n,file.size)).arrayBuffer());
+  const skip=[];let o=0,first='';
+  while(o<file.size){
+   const h=await rd(o,32);if(h.length<8)return null;
+   const dv=new DataView(h.buffer,h.byteOffset,h.byteLength);
+   let sz=dv.getUint32(0);const ty=D.decode(h.subarray(4,8));
+   if(!first)first=ty;
+   if(sz===1){if(h.length<16)return null;sz=Number(dv.getBigUint64(8))}else if(sz===0)return null;
+   if(sz<8||o+sz>file.size)return null;
+   if(ty==='uuid'&&h.length>=24&&XMPID.every((b,i)=>h[8+i]===b))skip.push([o,sz]);
+   o+=sz;
+  }
+  if(!['ftyp','moov','mdat','wide','free','skip','pnot'].includes(first))return null;
+  const body=T.encode(xmp(m)),n=8+16+body.length;
+  const box=cat(new Uint8Array([n>>>24,(n>>>16)&255,(n>>>8)&255,n&255]),T.encode('uuid'),new Uint8Array(XMPID),body);
+  const parts=[];let pos=0,size=0;
+  for(const [a,l] of skip){if(a>pos){parts.push(file.slice(pos,a));size+=a-pos}pos=a+l}
+  if(pos<file.size){parts.push(file.slice(pos));size+=file.size-pos}
+  parts.push(box);size+=box.length;
+  return {parts,size};
+ }
+
+ /* ZIP (tanpa kompresi) yang menerima potongan Blob, jadi video besar tidak menumpuk di memori */
+ function zipBlob(files){
+  const out=[],cen=[];let off=0;
+  for(const f of files){
+   const nm=T.encode(f.name);
+   const h=new DataView(new ArrayBuffer(30));
+   h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint32(14,f.crc,true);h.setUint32(18,f.size,true);h.setUint32(22,f.size,true);h.setUint16(26,nm.length,true);
+   out.push(new Uint8Array(h.buffer),nm,...f.parts);
+   const g=new DataView(new ArrayBuffer(46));
+   g.setUint32(0,0x02014b50,true);g.setUint16(4,20,true);g.setUint16(6,20,true);g.setUint16(8,0x0800,true);g.setUint32(16,f.crc,true);g.setUint32(20,f.size,true);g.setUint32(24,f.size,true);g.setUint16(28,nm.length,true);g.setUint32(42,off,true);
+   cen.push(new Uint8Array(g.buffer),nm);
+   off+=30+nm.length+f.size;
+   if(off>0xFFFFFFFF)throw new Error('ZIP is over 4 GB. Process fewer files per ZIP.');
+  }
+  const cs=cen.reduce((s,x)=>s+x.length,0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  return new Blob([...out,...cen,new Uint8Array(e.buffer)],{type:'application/zip'});
+ }
+
+ /* Tombol ZIP (dibuat lagi kalau belum ada) */
+ let z=document.querySelector('#zip');
+ if(!z){const c=document.querySelector('#csv');z=document.createElement('button');z.className='btn';z.id='zip';z.textContent='Download ZIP (embed)';c.insertAdjacentElement('afterend',z)}
+
+ z.onclick=async()=>{
+  const list=done();
+  if(!list.length)return toast('No successful metadata yet');
+  const label=z.textContent;z.disabled=true;
+  try{
+   const files=[],used=new Set();let raw=0,total=0,i=0;
+   for(const it of list){
+    z.textContent=`Packing ${++i}/${list.length}...`;
+    const m={t:noVec(it.title)||it.title,d:noVec(it.desc)||it.desc,k:cleanKw(it)};
+    let parts,size;
+    if(it.kind==='video'){
+     const r=await embedVideo(it.file,m);
+     if(r){parts=r.parts;size=r.size}else{raw++;parts=[it.file];size=it.file.size}
+    }else{
+     const u=new Uint8Array(await it.file.arrayBuffer()),k=kind(u);
+     const d=k==='jpg'?embedJpg(u,m):k==='png'?embedPng(u,m):(raw++,u);
+     parts=[d];size=d.length;
+    }
+    total+=size;if(total>3.9e9)throw new Error('Total size is over 4 GB. Process fewer files per ZIP.');
+    let name=it.file.name,n=1;while(used.has(name))name=it.file.name.replace(/(\.\w+)$/,`-${n++}$1`);
+    used.add(name);files.push({name,parts,size,crc:await crcOf(parts)});
+   }
+   const a=document.createElement('a');a.href=URL.createObjectURL(zipBlob(files));a.download='zk-metadata.zip';a.click();
+   setTimeout(()=>URL.revokeObjectURL(a.href),120000);
+   toast(raw?raw+' file(s) added without embedding (WEBP or unsupported video). Use CSV for them.':'ZIP ready');
+  }catch(e){toast('ZIP failed: '+(e.message||e))}
+  finally{z.disabled=false;z.textContent=label}
+ };
+}catch(e){console.warn('ZK embed patch:',e)}})();
+</script>
+<!-- ===== ZK EMBED PATCH v2 END ===== -->
 </body>
 </html>
