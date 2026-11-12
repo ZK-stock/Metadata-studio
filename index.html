@@ -665,5 +665,37 @@ html{min-height:100%}
 }catch(e){console.warn('ZK embed patch:',e)}})();
 </script>
 <!-- ===== ZK EMBED PATCH v2 END ===== -->
+<!-- ===== ZK KEY FIX START: perbaikan error "Invalid JSON payload... Unknown name family/display". Tempel tepat sebelum tag penutup body (paling bawah). Tidak mengubah kode lain. ===== -->
+<script id="zk-key-fix">
+(function(){try{
+ /* Ambil hanya isi API key: berhenti di tanda & ? spasi atau tanda kutip */
+ const clean=k=>String(k==null?'':k).split(/[&?\s"'<>]/)[0].trim();
+
+ /* Penjaga terakhir: permintaan ke Google hanya boleh membawa parameter key dan pageSize */
+ const of=window.fetch.bind(window);
+ window.fetch=function(u,o){
+  try{
+   if(typeof u==='string'&&u.indexOf('generativelanguage.googleapis.com')>-1){
+    const x=new URL(u),k=clean(x.searchParams.get('key')),ps=x.searchParams.get('pageSize');
+    x.search='';if(k)x.searchParams.set('key',k);if(ps)x.searchParams.set('pageSize',ps);
+    u=x.toString();
+   }else if(typeof u==='string'&&u.indexOf('api.groq.com')>-1&&o&&o.headers&&o.headers.Authorization){
+    o=Object.assign({},o,{headers:Object.assign({},o.headers,{Authorization:'Bearer '+clean(String(o.headers.Authorization).replace(/^Bearer\s+/i,''))})});
+   }
+  }catch(e){}
+  return of(u,o);
+ };
+
+ /* Bersihkan key yang sudah tersimpan dan key yang baru ditempel */
+ const fix=()=>{
+  let ch=false;
+  for(const p of ['gemini','groq']){const c=clean(S.keys[p]);if(c!==S.keys[p]){S.keys[p]=c;ch=true}}
+  if(ch){save();sync()}
+ };
+ fix();
+ document.querySelector('#key').addEventListener('change',()=>{fix();const k=document.querySelector('#key');k.value=S.keys[S.prov]});
+}catch(e){console.warn('ZK key fix:',e)}})();
+</script>
+<!-- ===== ZK KEY FIX END ===== -->
 </body>
 </html>
